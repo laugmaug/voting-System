@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Now</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <section id="root">
+        <center>
+            <img src="images/logo.png" class="mb-1" height="70"/>
+            <h2>Select Voting Category:</h2>
+
+            <ul class="nice-list">
+                <li class="list-item">National</li>
+                <li class="list-item">District</li>
+            </ul>
+
+            <br>
+            <br>
+            <button type="button" class="button modal-btn" onclick="login()">Next</button>
+        </center>
+    </section>
+
+    <section id="national" style="display: none"  >
+        <center>
+            <img src="images/logo.png" class="mb-1" height="70"/>
+            <h2>Vote For A National Party:</h2>
+
+            <ul class="nice-list">
+                <li class="list-item">ANC</li>
+                <li class="list-item">EFF</li>
+                <li class="list-item">DA</li>
+                <li class="list-item">Cosato</li>
+            </ul>
+
+            <br>
+            <br>
+            <a href="done.html"><button type="button" class="button modal-btn">Vote</button></a>
+        </center>
+    </section>
+
+    <section id="district" style="display: none">
+        <center>
+            <img src="images/logo.png" class="mb-1" height="70"/>
+            <h2>Vote For A District Party:</h2>
+
+            <ul class="nice-list">
+                <li class="list-item">ANC | District 8</li>
+                <li class="list-item">EFF | District 8</li>
+                <li class="list-item">DA | District 8</li>
+                <li class="list-item">Cosato | District 8</li>
+            </ul>
+
+            <br>
+            <br>
+            <a href="done.html"><button type="button" class="button modal-btn">Vote</button></a>
+        </center>
+    </section>
+
+    <div class="modal">
+    <div class="modal-content">
+        <span class="close-btn" id="btnClose">&times;</span>
+        <h2>Confirm Selection</h2>
+        <p>You have selected: <strong><text id="selection"></text></strong></p>
+        <p>Continue with selection?</p>
+        <center>
+            <p>
+                <a href="#" onclick="window.location.reload()"><button type="button" class="button" onclick="login()" style="width: 80%">No</button></a>
+                <br>
+                <br>
+                <button type="button" class="button modal-btn" onclick="navigate()" style="width: 80%">Yes</button>
+            </p>
+        </center>
+    </div>
+    </div>
+
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
