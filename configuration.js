@@ -8,10 +8,14 @@ const dbConfig = {
 };
 const PORT = 5000;
 
+const httpMsgFormat = "JSON";
+
 module.exports = {
     dbConfig: dbConfig,
-    PORT: PORT
+    PORT: PORT,
+    httpMsgFormat: httpMsgFormat
 };
+
 
 
 
