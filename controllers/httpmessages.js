@@ -62,5 +62,17 @@ function show413(req,res){
     }
 }
 
-module.exports = { show500Error, sendJson, show200, show404,show405, show413 };
+function show401Error(req,res){
+    if (config.httpMsgFormat === "HTML") {
+        res.writeHead(401 ,"Invalid login credentials", { "Content-Type": "text/html" });
+        res.write("<html><head><title>401</title></head><body>401: Invalid login credentials</body></html>");
+        res.end();
+    } else {
+        res.writeHead(401, { "Content-Type": "application/json" });
+        res.write(JSON.stringify({ data: "Invalid login credentials"}));
+        res.end();
+    }
+}
+
+module.exports = { show500Error, sendJson, show200, show404,show405, show413,show401Error };
 

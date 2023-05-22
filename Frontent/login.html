@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vote Now</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="../controllers/loginuser.js"></script>
 </head>
 <body>
     <center>
         <img src="images/logo.png" class="mb-1"/>
         <h1>Login</h1>
-        <form>
+        <form id="loginForm">
             <input type="text" id="username" placeholder="Email/ID No."/>
             <br>
             <br>
@@ -32,6 +33,11 @@
             let password = document.getElementById("password").value;
             let xhttp = new XMLHttpRequest();
 
+            let data = JSON.stringify({
+                "IDNumber": id,
+                "Password" : password
+            })
+
             console.log("user: " + user);
             console.log("password: " + password);
 
@@ -42,7 +48,7 @@
                 }
             };
             
-            xhttp.open("GET", "login.js", true);
+            xhttp.open("POST", "login.js", true);
             xhttp.send();
         }
     </script>
