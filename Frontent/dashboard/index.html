@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="dashboardstyling.css">
+	<title>Track Results</title>
+	
+</head>
+<body>
+    <section class="totalResults" >
+<table class="firsttable">
+    <thead>
+        <tr>
+          <th>Total Number of Votes</th>
+          <th id="totalvotes">250 000</th>
+        </tr>
+      </thead>
+</table>
+
+    </section>
+
+<section  id="dashboardsection">
+
+    <table>
+        <table class="dashboardtable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Party</th>
+                <th>Abbreviation</th>
+                <th>Votes</th>
+                <th>%</th>
+              </tr>
+            </thead>
+            <tbody id="tablebody">
+ 
+            </tbody>
+          </table>
+    </table>
+
+
+</section>	
+
+<script>
+  let xhr = new XMLHttpRequest();
+
+  xhr.open("GET", "http://localhost:5000/getPolicalparties", false);
+  xhr.send();
+
+  if (xhr.statusText == "OK") {
+    var data = JSON.parse(xhr.response)["recordset"];
+    let table = document.getElementById("tablebody");
+
+    for(let i = 0; i < data.length; i++){
+      table.innerHTML += `<tr>
+                            <td>`+ data[i]["PartyID"] +`</td>
+                            <td><img src="` +  data[i]["PartyLogo"] + `">` + data[i]["PartyName"] + `</td>
+                            <td>` +  data[i]["PartyAbv"] + `</td>
+                            <td>` +  getVotes(data[i]["PartyAbv"]) + `</td>
+                            <td>` +  getPercentage(getVotes(data[i]["PartyAbv"])) + `%</td>
+                          </tr>`;
+    }
+  }
+
+  function getVotes(abbr){
+    xhr.open("POST", "http://localhost:5000/getPoliticalPartyVotes", false);
+    xhr.setRequestHeader("Content-Type", "application/text");
+    xhr.send(abbr);
+
+    if (xhr.statusText == "OK") {
+      return JSON.parse(xhr.response)["recordsets"][0][0]["votes"];
+    }
+  }
+
+  function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+  }
+
+  function getPercentage(votes){
+    xhr.open("POST", "http://localhost:5000/getPercentage", false);
+    xhr.setRequestHeader("Content-Type", "application/text");
+    xhr.send(votes);
+
+    if (xhr.statusText === "OK") {
+      console.log(xhr.response);
+      return round(JSON.parse(xhr.response)["percentage"],2);
+    }
+  }
+  
+</script>
+</body>
+</html>

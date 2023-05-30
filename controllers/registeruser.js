@@ -1,3 +1,4 @@
+const { error } = require('console');
 const db = require('./dbconnection');
 const httpMsg = require('./httpmessages');
 const util = require('util');
@@ -8,17 +9,6 @@ function getUsers(req, res) {
       httpMsg.show500Error(req, res, err);
     } else {
       httpMsg.sendJson(req, res, data);
-      let jsonObject = JSON.parse(data);
-
-      console.log(jsonObject);
-
-      const resArray = [];
-      for (const [key, value] of Object.entries(data)) {
-        resArray.push([`${key}`, `${value}`]);
-      }
-
-      console.log(data);
-      // console.log(jsonObject);
     }
   });
 }
@@ -42,12 +32,13 @@ function registerUser(req, res, reqBody) {
         let sql = "INSERT INTO Users(FirstName, LastName, Email, Password, IDNumber) Values (";
         sql += util.format("'%s','%s', '%s','%s','%s'", data.FirstName, data.LastName, data.Email, data.Password, data.IDNumber) + ")";
         console.log(sql);
-
+       
         db.executeSql(sql, function (data, err) {
           if (err) {
             httpMsg.show500Error(req, res, err);
           } else {
             httpMsg.show200(req, res);
+            return res = 'you have successfully registered';
           }
         });
       } else {

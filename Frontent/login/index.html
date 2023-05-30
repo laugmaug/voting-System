@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Now</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body class="body">
+    <center class="slide-in" id="loginFrom">
+        <img src="../images/logo.png" height="120" />
+        <h1>Login</h1>
+        <form>
+            <input type="text" id="username" placeholder="Email/ID No." />
+            <br>
+            <br>
+            <input type="password" id="password" placeholder="Password" />
+            <br>
+            <br>
+            <span id="loader"></span>
+            <label id="feedback"></label>
+            <br>
+            <br>
+            <button type="button" class="button" onclick="login()">Login</button>
+            <br>
+            <br>
+            <label>Not yet registered? Register <a href="../register/"
+                    style="color: rgb(172, 188, 201)">here</a></label>
+        </form>
+    </center>
+
+    <script>
+        // Show the loader
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+
+        // Hide the loader
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
+
+        function login() {
+            let user = document.getElementById("username").value;
+            let userPassword = document.getElementById("password").value;
+
+            if (user.length == 0 || userPassword.length == 0) {
+                document.getElementById("feedback").innerText = "Fields can not be empty!";
+                document.getElementById("feedback").style.color = "red";
+            } else {
+                document.getElementById("feedback").innerText = "";
+                showLoader();
+
+                let xhttp = new XMLHttpRequest();
+
+
+                let data = JSON.stringify({
+                    "IDNumber": user,
+                    "Password": userPassword
+                })
+
+                xhttp.open("POST", "http://localhost:5000/loginuser", false);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(data);
+                hideLoader();
+
+                // console.log(xhttp.response);
+                // console.log(xhttp.statusText);
+
+                if (xhttp.statusText == "OK") {
+                    sessionStorage.setItem('userID', user);
+                    window.location.replace("../vote"); //to: http://127.0.0.1:5500//Frontent/vote/
+                } else {
+                    document.getElementById('feedback').innerText = 'Login credentionals are incorrect';
+                    document.getElementById('feedback').style.color = 'red';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

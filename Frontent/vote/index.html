@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Now</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+    <section id="national" style="display: block"  >
+        <center>
+            <img src="../images/logo.png" class="mb-1" height="70"/>
+            <h2>Vote For A National Party:</h2>
+
+            <!-- Pull from database -->
+            <ul class="nice-list" id="parties">
+            </ul>
+            <!-- Pull from database -->
+
+            <br>
+            <br>
+            <a href="#"><button id="btnVote" type="button" class="button modal-btn">Vote</button></a>
+        </center>
+    </section>
+
+    <section class="modal">
+    <section class="modal-content">
+        <span class="close-btn" id="btnClose">&times;</span>
+        <h2>Info</h2>
+        <p>You have voted for: <strong><text id="selection"></text></strong></p>
+        <center>
+            <p>
+                <br>
+                <a href="../done/"><button type="button" class="button modal-btn" style="width: 80%">OK</button></a>
+            </p>
+        </center>
+    </section>
+    </section>
+
+    <script>
+        function populateData(){
+            xhttp.open("GET", "http://localhost:5000/getparties", false);
+            xhttp.send();
+
+            if (xhttp.statusText === "OK") {
+
+                let data = JSON.parse(xhttp.response).recordset;
+
+                for(let dataset = 0; dataset < data.length; dataset++){
+                    document.getElementById("parties").innerHTML += '<li class="list-item">' + data[dataset]["PartyAbv"] + '</li>';
+                }
+            }
+        }
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "http://localhost:5000/affirm", false);
+
+            console.log(sessionStorage.getItem("userID"));
+            xhttp.send(sessionStorage.getItem("userID"));
+
+            if (xhttp.statusText === "OK") {
+                //get data from DB
+                console.log(JSON.parse(xhttp.response)["message"] != "New User");
+                if(JSON.parse(xhttp.response)["message"] === "New User"){
+                    populateData();
+                }else{
+                    window.location.replace("../dashboard/");
+                }
+            } 
+        
+
+    </script>
+    <script src="../js/vote.js"></script>
+</html>
+

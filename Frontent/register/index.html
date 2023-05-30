@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <script type="text/javascript" src="../controllers/loginuser.js"></script>
+    <title>Vote Now</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body class="body">
+    <center class="slide-in" id="regForm">
+        <img src="../images/logo.png" class="mb-1" height="100"/>
+        <h1>Register</h1>
+        <form>
+            <input type="text" id="name" placeholder="Name"/>
+            <br>
+            <br>
+            <input type="text" id="surname" placeholder="Surname"/>
+            <br>
+            <br>
+            <input type="text" id="email" placeholder="Email"/>
+            <br>
+            <br>
+            <input type="text" id="id" placeholder="ID No."/>
+            <br>
+            <br>
+            <input type="password" id="password" placeholder="Password"/>
+            <br>
+            <br>
+            <input type="password" id="passwordConfirm" placeholder="Password Confirm"/>
+            <br>
+            <label id="feedback" style="color: red"></label>
+            <section id="loader"></section>
+            <br>
+            <br>
+            <button type="button" class="button" onclick="login()">Register</button>
+        </form>
+    </center>
+
+    <script>
+        // Hide the loader
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+
+        // Hide the loader
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
+
+        function login(){
+             
+
+            let name = document.getElementById("name").value;
+            let surname = document.getElementById("surname").value;
+            let email = document.getElementById("email").value;
+            let id = document.getElementById("id").value;
+            let password = document.getElementById("password").value;
+            let passwordConfirm = document.getElementById("passwordConfirm").value;
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isValidEmail = emailRegex.test(email);
+
+            if(name.length < 3){
+                document.getElementById("feedback").innerText = "Name should be at least 3 characters!";
+            }
+            else if(surname.length < 3){
+                document.getElementById("feedback").innerText = "Surname should be at least 3 characters!";
+            }
+            else if(!isValidEmail){
+                document.getElementById("feedback").innerText = "Invalid Email!";
+            }
+            else if(id.length != 13){
+                document.getElementById("feedback").innerText = "ID should be a valid SA ID!";
+            }
+            else if(password.length < 8){
+                document.getElementById("feedback").innerText = "Password should be greater than 8 characters!";
+            }
+            else if(password != passwordConfirm){
+                document.getElementById("feedback").innerText = "Passwords don't match!";
+            }else{
+                showLoader();
+
+                let xhttp = new XMLHttpRequest();
+
+                console.log("user: " + name);
+                console.log("password: " + password);
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Typical action to be performed when the document is ready:
+                        
+                    }
+                };
+
+                let data = JSON.stringify({
+                "FirstName": name,
+                "LastName": surname,
+                "Email": email,
+                "Password": password,
+                "IDNumber": id
+            })
+            xhttp.open("POST", "http://localhost:5000/registeruser", false);
+            xhttp.setRequestHeader("Content-Type","application/json");
+            xhttp.send(data);
+
+            if (xhttp.statusText == "OK") {
+                alert ('You have successfully registered');
+                window.location.replace("/Frontent/login/index.html");
+            } else {
+                // alert ("Login credentionals are incorrect");
+                document.getElementById('feedback').innerText= 'User already exists';
+                document.getElementById('feedback').style.color = 'red';
+            }
+            
+            }
+
+            
+
+            
+        }
+    </script>
+</body>
+</html>
+
